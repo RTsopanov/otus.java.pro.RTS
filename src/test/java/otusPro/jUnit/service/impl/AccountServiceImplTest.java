@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import otusPro.jUnit.dao.AccountDao;
 import otusPro.jUnit.entity.Account;
+import otusPro.jUnit.entity.Agreement;
 import otusPro.jUnit.service.exception.AccountException;
 
 import java.math.BigDecimal;
@@ -60,6 +61,19 @@ public class AccountServiceImplTest {
         assertEquals("No source account", result.getLocalizedMessage());
     }
 
+//    @Test
+//    public void testDestinationNotFound() {
+//        when(accountDao.findById(any())).thenReturn(Optional.empty());
+//
+//        AccountException result = assertThrows(AccountException.class, new Executable() {
+//            @Override
+//            public void execute() throws Throwable {
+//                accountServiceImpl.makeTransfer(1L, 2L, new BigDecimal(10));
+//            }
+//        });
+//        assertEquals("No source account", result.getLocalizedMessage());
+//    }
+
 
     @Test
     public void testTransferWithVerify() {
@@ -84,5 +98,39 @@ public class AccountServiceImplTest {
 
         verify(accountDao).save(argThat(sourceMatcher));
         verify(accountDao).save(argThat(destinationMatcher));
+    }
+
+
+    @Test
+    public void testCharge() {
+        Account sourceAccount = new Account();
+        sourceAccount.setAmount(new BigDecimal(100));
+        sourceAccount.setId(1L);
+
+        when(accountDao.findById(eq(1L))).thenReturn(Optional.of(sourceAccount));
+
+        accountServiceImpl.charge(1L, new BigDecimal(10));
+
+        assertEquals(new BigDecimal(90), sourceAccount.getAmount());
+    }
+
+@Test
+    public void iterableToList() {
+        assertEquals(0, accountServiceImpl.getAccounts().size());
+    }
+
+
+
+@Test
+    public void addAccountsTest() {
+        Account account = new Account();
+
+        account.setAgreementId(1L);
+        account.setNumber("1");
+        account.setType(0);
+        account.setAmount(new BigDecimal(10));
+
+        assertEquals(0, accountServiceImpl.getAccounts().size());
+        accountServiceImpl.addAccount(new Agreement(), "1", 0, new BigDecimal(10));
     }
 }
