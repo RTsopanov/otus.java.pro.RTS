@@ -61,18 +61,7 @@ public class AccountServiceImplTest {
         assertEquals("No source account", result.getLocalizedMessage());
     }
 
-//    @Test
-//    public void testDestinationNotFound() {
-//        when(accountDao.findById(any())).thenReturn(Optional.empty());
-//
-//        AccountException result = assertThrows(AccountException.class, new Executable() {
-//            @Override
-//            public void execute() throws Throwable {
-//                accountServiceImpl.makeTransfer(1L, 2L, new BigDecimal(10));
-//            }
-//        });
-//        assertEquals("No source account", result.getLocalizedMessage());
-//    }
+
 
 
     @Test
@@ -111,7 +100,7 @@ public class AccountServiceImplTest {
 
         accountServiceImpl.charge(1L, new BigDecimal(10));
 
-        assertEquals(new BigDecimal(90), sourceAccount.getAmount());
+        assertEquals(BigDecimal.valueOf(90), sourceAccount.getAmount());
     }
 
 @Test
