@@ -21,7 +21,7 @@ public final class Box {
         magenta = new Matryoshka("magenta");
     }
 
-    // Итератор для последовательного перебора по уровню
+
     public Iterator<String> getSmallFirstIterator() {
         return new Iterator<>() {
             private int index = 0;
@@ -46,7 +46,7 @@ public final class Box {
         };
     }
 
-    // Итератор для перебора по цвету
+
     public Iterator<String> getColorFirstIterator() {
         return new Iterator<>() {
             private int colorIndex = 0;
@@ -64,14 +64,15 @@ public final class Box {
                 }
                 List<String> currentList;
                 switch (colorIndex) {
-                    case 0: currentList = red.getItems(); break;
-                    case 1: currentList = green.getItems(); break;
-                    case 2: currentList = blue.getItems(); break;
-                    case 3: currentList = magenta.getItems(); break;
-                    default: throw new IllegalStateException("Unexpected color index: " + colorIndex);
+                    case 0 -> currentList = red.getItems();
+                    case 1 -> currentList = green.getItems();
+                    case 2 -> currentList = blue.getItems();
+                    case 3 -> currentList = magenta.getItems();
+                    default -> throw new IllegalStateException("Unexpected color index: " + colorIndex);
                 }
                 String result = currentList.get(partIndex);
-                if (++colorIndex == 4) {
+                colorIndex++;
+                if (colorIndex == 4) {
                     colorIndex = 0;
                     partIndex++;
                 }
